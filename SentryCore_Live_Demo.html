@@ -4,256 +4,1398 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>SentryCore Live Demo</title>
+
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Spectral:wght@600;700&display=swap');
-  * { box-sizing: border-box; }
-  body {
-    margin: 0; font-family: 'Inter', sans-serif; background: #0B1F33;
-    display: flex; justify-content: center; min-height: 100vh;
+
+  * {
+    box-sizing: border-box;
   }
-  .app { width: 100%; max-width: 420px; min-height: 100vh; background: #0B1F33; position: relative; }
-  .header { padding: 24px 20px 16px; display: flex; align-items: center; justify-content: space-between; }
-  .brand { display: flex; align-items: center; gap: 8px; }
-  .brand-icon { padding: 6px; border-radius: 8px; background: #1C7293; display: flex; }
-  .brand-name { font-family: 'Spectral', serif; font-weight: 700; font-size: 18px; color: #fff; letter-spacing: 0.5px; }
-  .live { display: flex; align-items: center; gap: 6px; }
-  .live-dot { width: 8px; height: 8px; border-radius: 999px; background: #2FE6D6; display: inline-block; animation: pulse 1.4s ease-in-out infinite; }
-  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
-  .live-label { font-size: 11px; font-weight: 700; color: #2FE6D6; letter-spacing: 1px; }
-  .content { padding: 0 20px 60px; }
-  .unit-label { font-size: 12px; font-weight: 700; color: #9FB3C8; letter-spacing: 1.5px; margin-bottom: 4px; }
-  .card { background: #132B45; border-radius: 14px; padding: 16px; margin-bottom: 16px; }
-  .gauge-card { display: flex; align-items: center; gap: 18px; padding: 20px 16px; border: 1px solid #1C729355; margin-top: 8px; }
-  .gauge-wrap { position: relative; width: 132px; height: 132px; flex-shrink: 0; }
-  .gauge-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-  .mhi-value { font-family: 'Spectral', serif; font-weight: 700; font-size: 30px; color: #fff; }
-  .mhi-label { font-size: 10px; font-weight: 700; color: #9FB3C8; letter-spacing: 1px; }
-  .side-label { font-size: 10px; font-weight: 700; color: #9FB3C8; letter-spacing: 1px; margin-bottom: 4px; }
-  .badge { display: inline-block; padding: 4px 10px; border-radius: 999px; margin-bottom: 10px; }
-  .badge-text { font-size: 12px; font-weight: 700; }
-  .status-text { font-size: 13px; font-weight: 600; color: #fff; }
-  .section-label { font-size: 10px; font-weight: 700; color: #9FB3C8; letter-spacing: 1px; margin-bottom: 8px; }
-  .slider-row { margin-bottom: 14px; }
-  .slider-top { display: flex; justify-content: space-between; margin-bottom: 4px; }
-  .slider-name { font-size: 12px; color: #C7D6E3; }
-  .slider-val { font-size: 12px; font-weight: 700; color: #fff; }
-  input[type=range] { width: 100%; accent-color: #1C7293; }
-  .btn-row { display: flex; gap: 8px; margin-top: 14px; }
-  .btn-sim { flex: 1; padding: 10px; border-radius: 8px; border: none; background: #E24B4A; color: #fff; font-weight: 700; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; }
-  .btn-sim:disabled { opacity: 0.6; }
-  .btn-reset { padding: 10px 14px; border-radius: 8px; border: 1px solid #3A4E63; background: transparent; color: #C7D6E3; font-weight: 700; font-size: 12px; cursor: pointer; }
-  .ai-card { border: 1px solid #1C729355; }
-  .ai-header { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
-  .ai-title { font-size: 10px; font-weight: 700; color: #2FE6D6; letter-spacing: 1px; }
-  .ai-text { font-size: 13.5px; line-height: 1.5; color: #fff; min-height: 60px; }
-  .cursor { opacity: 1; }
-  .log-row { display: flex; align-items: center; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #1E3348; }
-  .log-row:last-child { border-bottom: none; }
-  .log-time { font-size: 11px; color: #7E93A8; font-family: monospace; }
-  .log-mhi { font-size: 11px; color: #C7D6E3; }
-  .log-mps { font-size: 10px; font-weight: 700; }
-  button:active, .btn-press:active { transform: scale(0.97); }
-  svg { display: block; }
+
+  body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: #0B1F33;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  .app {
+    width: 100%;
+    max-width: 420px;
+    min-height: 100vh;
+    background: #0B1F33;
+    position: relative;
+  }
+
+  .header {
+    padding: 24px 20px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .brand-icon {
+    padding: 6px;
+    border-radius: 8px;
+    background: #1C7293;
+    display: flex;
+  }
+
+  .brand-name {
+    font-family: 'Spectral', serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #fff;
+    letter-spacing: 0.5px;
+  }
+
+  .live {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: #2FE6D6;
+    display: inline-block;
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%,100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.4;
+    }
+  }
+
+  .live-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #2FE6D6;
+    letter-spacing: 1px;
+  }
+
+  .content {
+    padding: 0 20px 60px;
+  }
+
+  .unit-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #9FB3C8;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+  }
+
+  .card {
+    background: #132B45;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .gauge-card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 20px 16px;
+    border: 1px solid #1C729355;
+    margin-top: 8px;
+  }
+
+  .gauge-wrap {
+    position: relative;
+    width: 132px;
+    height: 132px;
+    flex-shrink: 0;
+  }
+
+  .gauge-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mhi-value {
+    font-family: 'Spectral', serif;
+    font-weight: 700;
+    font-size: 30px;
+    color: #fff;
+  }
+
+  .mhi-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #9FB3C8;
+    letter-spacing: 1px;
+  }
+
+  .side-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #9FB3C8;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    margin-bottom: 10px;
+  }
+
+  .badge-text {
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .status-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #9FB3C8;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .slider-row {
+    margin-bottom: 14px;
+  }
+
+  .slider-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+  }
+
+  .slider-name {
+    font-size: 12px;
+    color: #C7D6E3;
+  }
+
+  .slider-val {
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  input[type=range] {
+    width: 100%;
+    accent-color: #1C7293;
+  }
+
+  .btn-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .btn-sim {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    background: #E24B4A;
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+  }
+
+  .btn-sim:disabled {
+    opacity: 0.6;
+  }
+
+  .btn-reset {
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #3A4E63;
+    background: transparent;
+    color: #C7D6E3;
+    font-weight: 700;
+    font-size: 12px;
+    cursor: pointer;
+  }
+
+  .ai-card {
+    border: 1px solid #1C729355;
+  }
+
+  .ai-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+
+  .ai-title {
+    font-size: 10px;
+    font-weight: 700;
+    color: #2FE6D6;
+    letter-spacing: 1px;
+  }
+
+  .ai-text {
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: #fff;
+    min-height: 60px;
+  }
+
+  .log-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid #1E3348;
+  }
+
+  .log-row:last-child {
+    border-bottom: none;
+  }
+
+  .log-time {
+    font-size: 11px;
+    color: #7E93A8;
+    font-family: monospace;
+  }
+
+  .log-mhi {
+    font-size: 11px;
+    color: #C7D6E3;
+  }
+
+  .log-mps {
+    font-size: 10px;
+    font-weight: 700;
+  }
+
+  button:active,
+  .btn-press:active {
+    transform: scale(0.97);
+  }
+
+  svg {
+    display: block;
+  }
 </style>
 </head>
+
 <body>
+
 <div class="app">
+
+  <!-- HEADER -->
   <div class="header">
     <div class="brand">
+
       <div class="brand-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24"
+             fill="none"
+             stroke="#fff"
+             stroke-width="2">
+
+          <rect x="4" y="4" width="16" height="16" rx="2"/>
+          <rect x="9" y="9" width="6" height="6"/>
+
+          <line x1="9" y1="1" x2="9" y2="4"/>
+          <line x1="15" y1="1" x2="15" y2="4"/>
+          <line x1="9" y1="20" x2="9" y2="23"/>
+          <line x1="15" y1="20" x2="15" y2="23"/>
+
+          <line x1="20" y1="9" x2="23" y2="9"/>
+          <line x1="20" y1="14" x2="23" y2="14"/>
+          <line x1="1" y1="9" x2="4" y2="9"/>
+          <line x1="1" y1="14" x2="4" y2="14"/>
+
+        </svg>
       </div>
+
       <span class="brand-name">SentryCore</span>
     </div>
+
     <div class="live">
       <span class="live-dot"></span>
       <span class="live-label">LIVE MONITORING</span>
     </div>
   </div>
 
+
   <div class="content">
+
     <p class="unit-label">UNIT-3 &middot; CONVEYOR MOTOR</p>
 
+
+    <!-- MHI GAUGE -->
     <div class="card gauge-card" id="gaugeCard">
+
       <div class="gauge-wrap">
-        <svg width="132" height="132" viewBox="0 0 132 132" style="transform: rotate(-90deg);">
-          <circle cx="66" cy="66" r="54" fill="none" stroke="#26384D" stroke-width="10" />
-          <circle id="gaugeArc" cx="66" cy="66" r="54" fill="none" stroke="#1C7293" stroke-width="10" stroke-linecap="round"
-            stroke-dasharray="339.29" stroke-dashoffset="50" style="transition: stroke-dashoffset 0.5s ease, stroke 0.4s ease;" />
+
+        <svg width="132"
+             height="132"
+             viewBox="0 0 132 132"
+             style="transform: rotate(-90deg);">
+
+          <circle
+            cx="66"
+            cy="66"
+            r="54"
+            fill="none"
+            stroke="#26384D"
+            stroke-width="10"
+          />
+
+          <circle
+            id="gaugeArc"
+            cx="66"
+            cy="66"
+            r="54"
+            fill="none"
+            stroke="#1C7293"
+            stroke-width="10"
+            stroke-linecap="round"
+            stroke-dasharray="339.29"
+            stroke-dashoffset="46"
+            style="transition: stroke-dashoffset 0.5s ease, stroke 0.4s ease;"
+          />
+
         </svg>
+
         <div class="gauge-center">
-          <span class="mhi-value" id="mhiValue">85</span>
-          <span class="mhi-label">MHI SCORE</span>
+
+          <span class="mhi-value" id="mhiValue">
+            86
+          </span>
+
+          <span class="mhi-label">
+            MHI SCORE
+          </span>
+
         </div>
+
       </div>
+
+
       <div style="flex:1">
-        <p class="side-label">PRIORITY</p>
-        <div class="badge" id="priorityBadge"><span class="badge-text" id="priorityText">LOW</span></div>
-        <p class="side-label">STATUS</p>
-        <span class="status-text" id="statusText">HEALTHY</span>
+
+        <p class="side-label">
+          PRIORITY
+        </p>
+
+        <div class="badge" id="priorityBadge">
+
+          <span class="badge-text" id="priorityText">
+            LOW
+          </span>
+
+        </div>
+
+        <p class="side-label">
+          STATUS
+        </p>
+
+        <span class="status-text" id="statusText">
+          HEALTHY
+        </span>
+
       </div>
+
     </div>
 
+
+    <!-- MHI TREND -->
     <div class="card">
-      <p class="section-label">MHI TREND</p>
-      <svg width="100%" height="50" viewBox="0 0 300 50" preserveAspectRatio="none">
-        <polyline id="trendLine" fill="none" stroke="#2FE6D6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" points="0,25" />
+
+      <p class="section-label">
+        MHI TREND
+      </p>
+
+      <svg width="100%"
+           height="50"
+           viewBox="0 0 300 50"
+           preserveAspectRatio="none">
+
+        <polyline
+          id="trendLine"
+          fill="none"
+          stroke="#2FE6D6"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          points="0,10 60,15 120,12 180,18 240,14 300,10"
+        />
+
       </svg>
+
     </div>
 
+
+    <!-- SENSOR INPUT -->
     <div class="card">
-      <p class="section-label">SIMULATE SENSOR INPUT</p>
+
+      <p class="section-label">
+        SIMULATE SENSOR INPUT
+      </p>
+
+
+      <!-- VIBRATION -->
       <div class="slider-row">
-        <div class="slider-top"><span class="slider-name">Vibration change</span><span class="slider-val" id="vibVal">8.0%</span></div>
-        <input type="range" id="vibSlider" min="0" max="25" step="0.5" value="8" />
+
+        <div class="slider-top">
+
+          <span class="slider-name">
+            Vibration change
+          </span>
+
+          <span class="slider-val" id="vibVal">
+            8.0%
+          </span>
+
+        </div>
+
+        <input
+          type="range"
+          id="vibSlider"
+          min="0"
+          max="25"
+          step="0.5"
+          value="8"
+        />
+
       </div>
+
+
+      <!-- TEMPERATURE -->
       <div class="slider-row" style="margin-bottom:0">
-        <div class="slider-top"><span class="slider-name">Temperature change</span><span class="slider-val" id="tempVal">2.0&deg;C</span></div>
-        <input type="range" id="tempSlider" min="0" max="10" step="0.2" value="2" />
+
+        <div class="slider-top">
+
+          <span class="slider-name">
+            Temperature change
+          </span>
+
+          <span class="slider-val" id="tempVal">
+            2.0&deg;C
+          </span>
+
+        </div>
+
+        <input
+          type="range"
+          id="tempSlider"
+          min="0"
+          max="10"
+          step="0.2"
+          value="2"
+        />
+
       </div>
+
+
+      <!-- BUTTONS -->
       <div class="btn-row">
-        <button class="btn-sim btn-press" id="simBtn">&#9654; Simulate fault</button>
-        <button class="btn-reset btn-press" id="resetBtn">&#8635;</button>
+
+        <button
+          class="btn-sim btn-press"
+          id="simBtn">
+
+          &#9654; Simulate fault
+
+        </button>
+
+        <button
+          class="btn-reset btn-press"
+          id="resetBtn">
+
+          &#8635;
+
+        </button>
+
       </div>
+
     </div>
 
+
+    <!-- AI DIAGNOSIS -->
     <div class="card ai-card">
+
       <div class="ai-header">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2FE6D6" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-        <span class="ai-title">AI DIAGNOSIS &middot; POWERED BY LLAMA</span>
+
+        <svg
+          width="13"
+          height="13"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#2FE6D6"
+          stroke-width="2">
+
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+
+        </svg>
+
+        <span class="ai-title">
+          AI DIAGNOSIS &middot; POWERED BY LLAMA
+        </span>
+
       </div>
-      <p class="ai-text" id="aiText"></p>
+
+      <p
+        class="ai-text"
+        id="aiText">
+      </p>
+
     </div>
 
+
+    <!-- SENSOR LOG -->
     <div class="card">
-      <p class="section-label">SENSOR LOG</p>
+
+      <p class="section-label">
+        SENSOR LOG
+      </p>
+
       <div id="logList"></div>
+
     </div>
+
   </div>
+
 </div>
 
-<script>
-const NAVY='#0B1F33', TEAL='#1C7293', CYAN='#2FE6D6', AMBER='#F2A93B', RED='#E24B4A';
-const LEVEL_COLOR = { critical: RED, watch: AMBER, normal: TEAL };
-const LEVEL_LABEL = { critical: 'ACTION NEEDED', watch: 'MONITOR', normal: 'HEALTHY' };
 
-let vib = 8, temp = 2;
-let history = [{ mhi: 85 }];
+<script>
+
+/* =========================================================
+   SENTRYCORE CORE CONFIGURATION
+   ========================================================= */
+
+const NAVY = '#0B1F33';
+const TEAL = '#1C7293';
+const CYAN = '#2FE6D6';
+const AMBER = '#F2A93B';
+const ORANGE = '#F97316';
+const RED = '#E24B4A';
+
+
+/* =========================================================
+   MACHINE STATES
+   ========================================================= */
+
+const LEVEL_COLOR = {
+
+  critical: RED,
+  warning: ORANGE,
+  watch: AMBER,
+  normal: TEAL
+
+};
+
+
+const LEVEL_LABEL = {
+
+  critical: 'CRITICAL',
+  warning: 'WARNING',
+  watch: 'MONITOR',
+  normal: 'HEALTHY'
+
+};
+
+
+/* =========================================================
+   INITIAL SENSOR VALUES
+   ========================================================= */
+
+let vib = 8;
+let temp = 2;
+
+
+/* =========================================================
+   HISTORY + LOG
+   ========================================================= */
+
+let history = [];
 let log = [];
+
 let simInterval = null;
 let typeInterval = null;
+
+
+/* =========================================================
+   GAUGE
+   ========================================================= */
+
 const circ = 2 * Math.PI * 54;
 
+
+/* =========================================================
+   MHI CALCULATION ENGINE
+   =========================================================
+
+   Prototype model:
+
+   Vibration contributes 65% of total risk.
+   Temperature contributes 35% of total risk.
+
+   Normal operating baseline:
+      Vibration <= 5%
+      Temperature <= 1°C
+
+   The further the readings move above the
+   baseline, the greater the penalty.
+
+   MHI = 100 - weighted risk
+
+   MHI ranges from 0 to 100.
+   ========================================================= */
+
 function computeScores(v, t) {
-  const vibPenalty = v * 1.5;
-  const tempPenalty = t * 2;
-  const mhi = Math.max(0, Math.min(100, 100 - vibPenalty - tempPenalty));
-  const mps = mhi < 50 ? 'High' : mhi < 75 ? 'Medium' : 'Low';
-  return { mhi: Math.round(mhi * 10) / 10, mps };
+
+  /* -----------------------------
+     VIBRATION PENALTY
+     ----------------------------- */
+
+  const vibPenalty = Math.max(
+    0,
+    Math.min(
+      100,
+      ((v - 5) / 20) * 100
+    )
+  );
+
+
+  /* -----------------------------
+     TEMPERATURE PENALTY
+     ----------------------------- */
+
+  const tempPenalty = Math.max(
+    0,
+    Math.min(
+      100,
+      ((t - 1) / 9) * 100
+    )
+  );
+
+
+  /* -----------------------------
+     WEIGHTED RISK
+     ----------------------------- */
+
+  const weightedRisk =
+    (0.65 * vibPenalty) +
+    (0.35 * tempPenalty);
+
+
+  /* -----------------------------
+     MACHINE HEALTH INDEX
+     ----------------------------- */
+
+  const mhi = Math.max(
+    0,
+    Math.min(
+      100,
+      100 - weightedRisk
+    )
+  );
+
+
+  /* -----------------------------
+     PRIORITY
+     ----------------------------- */
+
+  let mps;
+
+  if (mhi < 40) {
+
+    mps = 'Urgent';
+
+  } else if (mhi < 60) {
+
+    mps = 'High';
+
+  } else if (mhi < 80) {
+
+    mps = 'Medium';
+
+  } else {
+
+    mps = 'Low';
+
+  }
+
+
+  return {
+
+    mhi: Math.round(mhi * 10) / 10,
+    mps: mps,
+    vibPenalty: Math.round(vibPenalty * 10) / 10,
+    tempPenalty: Math.round(tempPenalty * 10) / 10
+
+  };
+
 }
+
+
+/* =========================================================
+   AI DIAGNOSIS ENGINE
+   ========================================================= */
 
 function diagnose(v, t, mhi, mps) {
-  if (mps === 'High') {
-    return { level: 'critical', text: 'Vibration up ' + v.toFixed(1) + '%, temperature up ' + t.toFixed(1) + '\u00b0C over 6 hours. Pattern consistent with early bearing wear or misalignment. Recommend physical inspection within 48 hours to avoid unplanned failure.' };
+
+
+  /* CRITICAL */
+
+  if (mhi < 40) {
+
+    return {
+
+      level: 'critical',
+
+      text:
+        'Critical condition detected. Vibration has increased by ' +
+        v.toFixed(1) +
+        '% and temperature has increased by ' +
+        t.toFixed(1) +
+        '°C. The combined pattern indicates significant machine stress. Stop or isolate the affected equipment where operational procedures permit and carry out an immediate inspection.'
+
+    };
+
   }
-  if (mps === 'Medium') {
-    return { level: 'watch', text: 'Vibration up ' + v.toFixed(1) + '%, temperature up ' + t.toFixed(1) + '\u00b0C. Readings are elevated but not yet urgent. Recommend scheduling a check within the next 1-2 weeks.' };
+
+
+  /* WARNING */
+
+  if (mhi < 60) {
+
+    return {
+
+      level: 'warning',
+
+      text:
+        'Warning: machine condition is deteriorating. Vibration has increased by ' +
+        v.toFixed(1) +
+        '% while temperature has increased by ' +
+        t.toFixed(1) +
+        '°C. Inspect the conveyor motor for possible bearing wear, misalignment, excessive load or other mechanical stress.'
+
+    };
+
   }
-  return { level: 'normal', text: 'Vibration and temperature readings are within normal operating range. No action needed \u2014 continue routine monitoring.' };
+
+
+  /* MONITOR */
+
+  if (mhi < 80) {
+
+    return {
+
+      level: 'watch',
+
+      text:
+        'Machine condition requires monitoring. Vibration is up ' +
+        v.toFixed(1) +
+        '% and temperature is up ' +
+        t.toFixed(1) +
+        '°C. The trend is elevated but not yet critical. Schedule a maintenance inspection and continue monitoring.'
+
+    };
+
+  }
+
+
+  /* HEALTHY */
+
+  return {
+
+    level: 'normal',
+
+    text:
+      'Vibration and temperature readings are within the prototype normal operating range. Continue routine monitoring and watch for changes in the MHI trend.'
+
+  };
+
 }
+
+
+/* =========================================================
+   RENDER DASHBOARD
+   ========================================================= */
 
 function render() {
-  const { mhi, mps } = computeScores(vib, temp);
-  const diag = diagnose(vib, temp, mhi, mps);
+
+
+  /* Calculate machine health */
+
+  const scores = computeScores(vib, temp);
+
+  const mhi = scores.mhi;
+  const mps = scores.mps;
+
+
+  /* Generate diagnosis */
+
+  const diag = diagnose(
+    vib,
+    temp,
+    mhi,
+    mps
+  );
+
+
+  /* Determine colour */
+
   const color = LEVEL_COLOR[diag.level];
 
-  document.getElementById('mhiValue').textContent = mhi.toFixed(0);
-  document.getElementById('gaugeArc').style.stroke = color;
-  document.getElementById('gaugeArc').style.strokeDashoffset = circ * (1 - mhi / 100);
-  document.getElementById('gaugeCard').style.border = '1px solid ' + color + '55';
 
-  document.getElementById('priorityBadge').style.backgroundColor = color + '25';
-  document.getElementById('priorityText').style.color = color;
-  document.getElementById('priorityText').textContent = mps.toUpperCase();
-  document.getElementById('statusText').textContent = LEVEL_LABEL[diag.level];
+  /* -----------------------------
+     MHI NUMBER
+     ----------------------------- */
 
-  document.getElementById('vibVal').textContent = vib.toFixed(1) + '%';
-  document.getElementById('tempVal').textContent = temp.toFixed(1) + '\u00b0C';
+  document.getElementById(
+    'mhiValue'
+  ).textContent = mhi.toFixed(0);
 
-  const pts = history.map((h, i) => {
-    const x = (i / Math.max(1, history.length - 1)) * 300;
-    const y = 50 - (h.mhi / 100) * 46;
-    return x + ',' + y;
-  }).join(' ');
-  document.getElementById('trendLine').setAttribute('points', pts);
 
-  if (typeInterval) clearInterval(typeInterval);
-  const textEl = document.getElementById('aiText');
+  /* -----------------------------
+     GAUGE
+     ----------------------------- */
+
+  document.getElementById(
+    'gaugeArc'
+  ).style.stroke = color;
+
+
+  document.getElementById(
+    'gaugeArc'
+  ).style.strokeDashoffset =
+    circ * (1 - mhi / 100);
+
+
+  document.getElementById(
+    'gaugeCard'
+  ).style.border =
+    '1px solid ' + color + '55';
+
+
+  /* -----------------------------
+     PRIORITY
+     ----------------------------- */
+
+  document.getElementById(
+    'priorityBadge'
+  ).style.backgroundColor =
+    color + '25';
+
+
+  document.getElementById(
+    'priorityText'
+  ).style.color = color;
+
+
+  document.getElementById(
+    'priorityText'
+  ).textContent =
+    mps.toUpperCase();
+
+
+  /* -----------------------------
+     STATUS
+     ----------------------------- */
+
+  document.getElementById(
+    'statusText'
+  ).textContent =
+    LEVEL_LABEL[diag.level];
+
+
+  /* -----------------------------
+     SENSOR VALUES
+     ----------------------------- */
+
+  document.getElementById(
+    'vibVal'
+  ).textContent =
+    vib.toFixed(1) + '%';
+
+
+  document.getElementById(
+    'tempVal'
+  ).textContent =
+    temp.toFixed(1) + '°C';
+
+
+  /* =====================================================
+     MHI TREND
+     ===================================================== */
+
+  const pts = history.map(
+    (h, i) => {
+
+      const x =
+        (i / Math.max(
+          1,
+          history.length - 1
+        )) * 300;
+
+      const y =
+        50 - (h.mhi / 100) * 46;
+
+      return x + ',' + y;
+
+    }
+  ).join(' ');
+
+
+  document.getElementById(
+    'trendLine'
+  ).setAttribute(
+    'points',
+    pts
+  );
+
+
+  /* =====================================================
+     AI DIAGNOSIS TYPING EFFECT
+     ===================================================== */
+
+  if (typeInterval) {
+
+    clearInterval(typeInterval);
+
+  }
+
+
+  const textEl =
+    document.getElementById(
+      'aiText'
+    );
+
+
   textEl.textContent = '';
-  let i = 0;
-  typeInterval = setInterval(() => {
-    i += 2;
-    textEl.textContent = diag.text.slice(0, i);
-    if (i >= diag.text.length) clearInterval(typeInterval);
-  }, 12);
 
-  const t = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-  log.unshift({ time: t, mhi, mps, level: diag.level });
+
+  let i = 0;
+
+
+  typeInterval = setInterval(
+    () => {
+
+      i += 2;
+
+      textEl.textContent =
+        diag.text.slice(0, i);
+
+
+      if (
+        i >= diag.text.length
+      ) {
+
+        clearInterval(
+          typeInterval
+        );
+
+      }
+
+    },
+    12
+  );
+
+
+  /* =====================================================
+     SENSOR LOG
+     ===================================================== */
+
+  const time =
+    new Date().toLocaleTimeString(
+      [],
+      {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      }
+    );
+
+
+  log.unshift({
+
+    time: time,
+    mhi: mhi,
+    mps: mps,
+    level: diag.level
+
+  });
+
+
+  /* Keep last 6 entries */
+
   log = log.slice(0, 6);
-  const logList = document.getElementById('logList');
-  logList.innerHTML = log.map(e =>
-    '<div class="log-row"><span class="log-time">' + e.time + '</span><span class="log-mhi">MHI ' + e.mhi.toFixed(0) + '</span><span class="log-mps" style="color:' + LEVEL_COLOR[e.level] + '">' + e.mps.toUpperCase() + '</span></div>'
-  ).join('');
+
+
+  const logList =
+    document.getElementById(
+      'logList'
+    );
+
+
+  logList.innerHTML =
+    log.map(
+      e =>
+
+        '<div class="log-row">' +
+
+          '<span class="log-time">' +
+            e.time +
+          '</span>' +
+
+          '<span class="log-mhi">' +
+            'MHI ' +
+            e.mhi.toFixed(0) +
+          '</span>' +
+
+          '<span class="log-mps" style="color:' +
+            LEVEL_COLOR[e.level] +
+          '">' +
+
+            e.mps.toUpperCase() +
+
+          '</span>' +
+
+        '</div>'
+
+    ).join('');
+
 }
 
-document.getElementById('vibSlider').addEventListener('input', (e) => {
-  stopSim();
-  vib = Number(e.target.value);
-  history.push({ mhi: computeScores(vib, temp).mhi });
-  history = history.slice(-12);
-  render();
-});
-document.getElementById('tempSlider').addEventListener('input', (e) => {
-  stopSim();
-  temp = Number(e.target.value);
-  history.push({ mhi: computeScores(vib, temp).mhi });
-  history = history.slice(-12);
-  render();
-});
+
+/* =========================================================
+   VIBRATION SLIDER
+   ========================================================= */
+
+document
+  .getElementById('vibSlider')
+  .addEventListener(
+    'input',
+    (e) => {
+
+      stopSim();
+
+      vib =
+        Number(e.target.value);
+
+
+      const newMHI =
+        computeScores(
+          vib,
+          temp
+        ).mhi;
+
+
+      history.push({
+        mhi: newMHI
+      });
+
+
+      history =
+        history.slice(-12);
+
+
+      render();
+
+    }
+  );
+
+
+/* =========================================================
+   TEMPERATURE SLIDER
+   ========================================================= */
+
+document
+  .getElementById('tempSlider')
+  .addEventListener(
+    'input',
+    (e) => {
+
+      stopSim();
+
+      temp =
+        Number(e.target.value);
+
+
+      const newMHI =
+        computeScores(
+          vib,
+          temp
+        ).mhi;
+
+
+      history.push({
+        mhi: newMHI
+      });
+
+
+      history =
+        history.slice(-12);
+
+
+      render();
+
+    }
+  );
+
+
+/* =========================================================
+   STOP SIMULATION
+   ========================================================= */
 
 function stopSim() {
-  if (simInterval) { clearInterval(simInterval); simInterval = null; }
-  document.getElementById('simBtn').disabled = false;
-  document.getElementById('simBtn').innerHTML = '&#9654; Simulate fault';
+
+  if (simInterval) {
+
+    clearInterval(
+      simInterval
+    );
+
+    simInterval = null;
+
+  }
+
+
+  document.getElementById(
+    'simBtn'
+  ).disabled = false;
+
+
+  document.getElementById(
+    'simBtn'
+  ).innerHTML =
+    '&#9654; Simulate fault';
+
 }
 
-document.getElementById('simBtn').addEventListener('click', () => {
-  if (simInterval) return;
-  document.getElementById('simBtn').disabled = true;
-  document.getElementById('simBtn').innerHTML = '&#10074;&#10074; Running...';
-  simInterval = setInterval(() => {
-    vib = Math.min(25, vib + 1.4);
-    temp = Math.min(10, temp + 0.5);
-    document.getElementById('vibSlider').value = vib;
-    document.getElementById('tempSlider').value = temp;
-    history.push({ mhi: computeScores(vib, temp).mhi });
-    history = history.slice(-12);
-    render();
-    if (vib >= 25) stopSim();
-  }, 500);
-});
 
-document.getElementById('resetBtn').addEventListener('click', () => {
-  stopSim();
-  vib = 8; temp = 2;
-  document.getElementById('vibSlider').value = 8;
-  document.getElementById('tempSlider').value = 2;
-  history = [{ mhi: 85 }];
-  log = [];
-  render();
-});
+/* =========================================================
+   SIMULATE FAULT
+   =========================================================
+
+   The virtual machine gradually deteriorates.
+
+   Vibration:
+      +1.4% every cycle
+
+   Temperature:
+      +0.5°C every cycle
+
+   This allows the judge to watch:
+
+   HEALTHY
+       ↓
+   MONITOR
+       ↓
+   WARNING
+       ↓
+   CRITICAL
+   ========================================================= */
+
+document
+  .getElementById('simBtn')
+  .addEventListener(
+    'click',
+    () => {
+
+      if (simInterval) {
+        return;
+      }
+
+
+      document.getElementById(
+        'simBtn'
+      ).disabled = true;
+
+
+      document.getElementById(
+        'simBtn'
+      ).innerHTML =
+        '&#10074;&#10074; Running...';
+
+
+      simInterval =
+        setInterval(
+          () => {
+
+
+            /* Increase vibration */
+
+            vib =
+              Math.min(
+                25,
+                vib + 1.4
+              );
+
+
+            /* Increase temperature */
+
+            temp =
+              Math.min(
+                10,
+                temp + 0.5
+              );
+
+
+            /* Update sliders */
+
+            document.getElementById(
+              'vibSlider'
+            ).value = vib;
+
+
+            document.getElementById(
+              'tempSlider'
+            ).value = temp;
+
+
+            /* Calculate new health */
+
+            const newMHI =
+              computeScores(
+                vib,
+                temp
+              ).mhi;
+
+
+            history.push({
+              mhi: newMHI
+            });
+
+
+            history =
+              history.slice(-12);
+
+
+            /* Update dashboard */
+
+            render();
+
+
+            /* Stop at maximum simulated fault */
+
+            if (
+              vib >= 25 &&
+              temp >= 10
+            ) {
+
+              stopSim();
+
+            }
+
+          },
+          500
+        );
+
+    }
+  );
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+document
+  .getElementById('resetBtn')
+  .addEventListener(
+    'click',
+    () => {
+
+      stopSim();
+
+
+      /* Restore normal demonstration values */
+
+      vib = 8;
+      temp = 2;
+
+
+      document.getElementById(
+        'vibSlider'
+      ).value = 8;
+
+
+      document.getElementById(
+        'tempSlider'
+      ).value = 2;
+
+
+      /* Recalculate MHI */
+
+      const startingMHI =
+        computeScores(
+          vib,
+          temp
+        ).mhi;
+
+
+      history = [
+        {
+          mhi: startingMHI
+        }
+      ];
+
+
+      log = [];
+
+
+      render();
+
+    }
+  );
+
+
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
+
+const startingMHI =
+  computeScores(
+    vib,
+    temp
+  ).mhi;
+
+
+history = [
+  {
+    mhi: startingMHI
+  }
+];
+
 
 render();
+
 </script>
+
 </body>
 </html>

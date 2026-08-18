@@ -1,24 +1,24 @@
 # SentryCore
 
-**An AI-powered predictive maintenance platform for industrial and business-critical equipment**
+**An AI-powered predictive maintenance platform for industrial equipment**
 
 ## Team: Quantum Pioneers
 - Omotade Hezekiah Adeniyi (Team Lead)
 - Dada Daniel
 - Bolajoko Aliyat
-- Anwakuwo Christopher Marvin
+- Anwankuo Christopher Marvin
 
 ## Problem
-Nigerian SMEs and businesses rely on machinery to operate, but banks like Wema have limited real-time visibility into the condition of equipment tied to asset-backed loans. Risk assessment today relies mostly on paperwork and periodic checks, not live data — meaning equipment failure, and the loan risk that comes with it, is often only discovered after the fact.
+Across industries — manufacturing, agriculture, logistics, small workshops — equipment failure is usually caught too late, after a breakdown has already happened. Most operations rely on manual checks or scheduled maintenance, missing early warning signs that develop gradually. This leads to unplanned downtime, costly emergency repairs, and avoidable equipment damage.
 
 ## Solution
-SentryCore uses ESP32-based IoT sensors to continuously monitor equipment health, computing a real-time **Machine Health Index (MHI)** and **Maintenance Priority Score (MPS)**. An AI layer (Google Gemini) translates this data into plain-language diagnoses and recommended actions — readable by any technician, not just engineers.
-
-## Pathway to Wema Bank's Ecosystem
-SentryCore's live equipment health data can serve as a **real-time risk signal for asset-backed lending** — giving Wema Bank visibility into the condition of financed equipment, enabling better-informed loan terms and early risk detection for SME borrowers, rather than relying on static paperwork.
+SentryCore uses ESP32-based IoT sensors to continuously monitor machine health in real time, computing a **Machine Health Index (MHI)** and **Maintenance Priority Score (MPS)**. An AI layer (Google Gemini) translates this data into plain-language diagnoses and recommended actions — readable by any technician, not just engineers.
 
 ## How It Works
 Sensors → ESP32 → MHI/MPS scoring → AI diagnosis (Gemini) → Live dashboard with alerts
+
+## Why It's General-Purpose
+The sensor-to-score-to-diagnosis pipeline isn't tied to one machine type or industry — it plugs into any equipment generating measurable condition signals (vibration, temperature, load), whether that's factory machinery, generators, or farm equipment.
 
 ## Live Demo
 🔗 [SentryCore Live Demo](https://omotadehez.github.io/SentryCore/SentryCore_Live_Demo.html)

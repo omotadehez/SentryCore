@@ -26,6 +26,25 @@ Sensors (vibration, acoustic, current, temperature) → ESP32 → weighted MHI/M
 ## Why It's General-Purpose
 The sensor-to-score-to-diagnosis pipeline isn't tied to one machine type or industry — it plugs into any equipment generating measurable condition signals, whether that's factory machinery, generators, or farm equipment.
 
+## Why Wema Bank Should Care
+When Wema Bank finances equipment — a generator, a production line — that machine becomes the collateral. Today, the bank only finds out a machine has failed after it stops working, by which point the business has stalled and the collateral's value has already dropped.
+
+**SentryCore turns that blind spot into live data — a credit score for machines.**
+
+Every monitored machine gets a real-time Machine Health Index (MHI) from 0–100, just like a credit score:
+- **90–100:** Healthy. Loan collateral is safe.
+- **40–60:** Deteriorating. Possible failure within weeks.
+- **Below 40:** Critical. Failure imminent.
+
+**What this unlocks for Wema Bank:**
+- **Risk reduction** — see equipment failure risk before a borrower defaults, not after
+- **Dynamic lending** — offer better rates to SMEs with consistently high MHI scores, since their collateral risk is verifiably lower
+- **Automated covenants** — if a financed machine's MHI drops below a set threshold, the loan officer is automatically flagged — no more surprise bad debt
+
+**Built for ALAT.** SentryCore is designed API-first, so it isn't a separate portal — the goal is to plug directly into ALAT for Business, alongside Wema's existing embedded-finance approach (as seen in its recent Duplo integration). A manufacturer checking their ALAT balance could see their equipment's health score in the same view.
+
+**The ask:** a pilot partnership with Wema Bank to monitor equipment across 10 manufacturing SMEs through the Hackaholics accelerator — making collateral visible, predictable, and smart.
+
 ## Roadmap
 Phase 2 will explore fluid condition monitoring (oil/hydraulic fluid analysis) and performance-output tracking (speed, throughput, power efficiency) for deeper diagnostic coverage — these require more specialized sensors than the current ESP32-based prototype.
 
